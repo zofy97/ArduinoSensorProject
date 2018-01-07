@@ -50,8 +50,8 @@ void setup(void)
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
 
-  // Weiße LED Pin als Output setzen 
-  pinMode(3, OUTPUT);
+  // Weiße LED Pin als Output setzen
+  pinMode(ledPin, OUTPUT);
 
   if (!BMPSensor.begin())
   {
@@ -95,12 +95,12 @@ void loop()
   Serial.print(resistance); Serial.print(" Ohm");
   Serial.print("  #   ");
 
-    // Ausgabe der Helligkeit (Photoresistor)
+  // Ausgabe der Helligkeit (Photoresistor)
   int sensorValue = 0;
   sensorValue = analogRead(PhotoResistorPin);
   Serial.print(sensorValue);
   Serial.print("           #   ");
-  
+
   // Helligkeitswert für die weiße LED
   int light = 255;
 
@@ -109,14 +109,14 @@ void loop()
   if (sensorValue < 100) {
     analogWrite (ledPin, light - 255);
   } else if (sensorValue < 300)  {
-    analogWrite (ledPin, light - 220);  
+    analogWrite (ledPin, light - 220);
   } else if (sensorValue < 500)  {
     analogWrite (ledPin, light - 180);
   } else if (sensorValue < 700)  {
     analogWrite (ledPin, light - 140);
   } else if (sensorValue < 900)  {
     analogWrite (ledPin, light - 100);
-  } else if (sensorValue < 1000)  {
+  } else if (sensorValue > 900)  {
     analogWrite (ledPin, light);
   }
 
@@ -156,14 +156,20 @@ void loop()
     digitalWrite (bluePin, HIGH);
     digitalWrite (greenPin, LOW);
     digitalWrite (redPin, LOW);
-  } else if (T < 19) {
+  } else if (T < 20) {
     // grün
+    digitalWrite (bluePin, LOW);
     digitalWrite (greenPin, HIGH);
+    digitalWrite (redPin, LOW);
   } else if (T < 24) {
     // weiß
-    digitalWrite (bluePin, LOW);
+    digitalWrite (greenPin, HIGH);
+    digitalWrite (redPin, HIGH);
+    digitalWrite (bluePin, HIGH);
   } else if (T < 27) {
     // gelb
+    digitalWrite (bluePin, LOW);
+    digitalWrite (greenPin, HIGH);
     digitalWrite (redPin, HIGH);
   } else if (T < 30)  {
     // lila
